@@ -73,7 +73,7 @@ int main()
 
 			auto save = "Seed: " + seedString + "\n\nSantas: \n" + saveList;
 
-			std::ofstream saveFile("../Seed/SantaListSeed.txt");
+			std::ofstream saveFile("./Seed/SantaListSeed.txt");
 
 			saveFile << save;
 
@@ -137,6 +137,7 @@ int main()
 	}
 
 	Tools::Log("Merry Christmas!", Tools::Colour::Red);
-	return 0;
 
+	system("pause");
+	return 0;
 }
