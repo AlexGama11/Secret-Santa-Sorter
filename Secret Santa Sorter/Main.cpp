@@ -5,6 +5,8 @@
 
 int main()
 {
+	//Variables
+
 	bool isListEnded = false;
 
 	bool isSearchEnded = false;
@@ -27,12 +29,14 @@ int main()
 
 // ------------------------------------------------------------------------------- DELIMITOR ------------------------------------------------------------------------------------------------//
 
+	//Utility class from my OpenGL program, here for console colours.
 	Utility::Initialize();
 	
 	Utility::Log("Name everyone who's participating as a secret santa! Write 'end' to finish the list.", Utility::Colour::Red);
 
 	while (!isListEnded)
 	{
+		//makes a list with the names, uses RNG for it.
 		std::cin >> santa;
 
 		//For Loop to convert each character to uppercase, making my check later be case insensitive.
@@ -55,6 +59,7 @@ int main()
 
 // ------------------------------------------------------------------------------- DELIMITOR ------------------------------------------------------------------------------------------------//
 
+	//Once list is made, search for who you gotta gift.
 	Utility::Log("List Made! Write your name to find out who you have to gift!", Utility::Colour::Red);
 	std::cin >> name;
 
@@ -67,17 +72,28 @@ int main()
 	{
 		if (name == secretSanta.at(searchLine))
 		{
-			receiverName = giftReceiver.at(searchLine);
-
-			for (int i = 1; i < receiverName.size(); i++)
+			//Reshuffle if its still the same name.
+			if (name == giftReceiver.at(searchLine))
 			{
-				receiverName.at(i) = tolower(receiverName.at(i));
+				std::shuffle(std::begin(giftReceiver), std::end(giftReceiver), rng);
 			}
 
-			std::string message = "You gotta gift: " + receiverName + "!";
+			else
+			{
+				//This is so the name isnt printed out in all caps.
+				receiverName = giftReceiver.at(searchLine);
 
-			Utility::Log(message, Utility::Colour::Red);
-			isSearchEnded = true;
+				for (int i = 1; i < receiverName.size(); i++)
+				{
+					receiverName.at(i) = tolower(receiverName.at(i));
+				}
+
+				std::string message = "You gotta gift: " + receiverName + "!";
+
+				Utility::Log(message, Utility::Colour::Red);
+				isSearchEnded = true;
+			}
+			
 		}
 
 		else
