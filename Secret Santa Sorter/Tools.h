@@ -1,10 +1,9 @@
 #pragma once
 #include <iostream>
-#include <string>
 #include <Windows.h>
 #include <assert.h>
 
-class Utility
+class Tools
 {
 
 public:

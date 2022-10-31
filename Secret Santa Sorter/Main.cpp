@@ -1,7 +1,8 @@
-#include <vector>
+#include "Tools.h"
+#include <string>
 #include <algorithm>
+#include <vector>
 #include <random>
-#include "Utility.h"
 
 int main()
 {
@@ -21,18 +22,27 @@ int main()
 
 	std::vector<std::string> giftReceiver;
 
+	std::string seedString;
+
 	int participantNumber = 0;
 
 	int searchLine = 0;
 
-	auto rng = std::default_random_engine{};
+	//auto rng = std::minstd_rand0{};
 
 // ------------------------------------------------------------------------------- DELIMITOR ------------------------------------------------------------------------------------------------//
 
 	//Utility class from my OpenGL program, here for console colours.
-	Utility::Initialize();
+	Tools::Initialize();
+
+	Tools::Log("Enter the Seed you wish to use!", Tools::Colour::Red);
+
+	std::getline(std::cin, seedString);
+	std::seed_seq seed(seedString.begin(), seedString.end());
+
+	std::minstd_rand0 generator(seed);
 	
-	Utility::Log("Name everyone who's participating as a secret santa! Write 'end' to finish the list.", Utility::Colour::Red);
+	Tools::Log("Now, name everyone who's participating as a secret santa! Write 'end' to finish the list.", Tools::Colour::Red);
 
 	while (!isListEnded)
 	{
@@ -47,8 +57,8 @@ int main()
 
 		if (santa == "END")
 		{
-			std::shuffle(std::begin(giftReceiver), std::end(giftReceiver), rng);
-			//Utility::Log(rng, Utility::Colour::Yellow);
+			std::shuffle(std::begin(giftReceiver), std::end(giftReceiver), generator());
+
 			isListEnded = true;
 		}
 
@@ -61,7 +71,7 @@ int main()
 // ------------------------------------------------------------------------------- DELIMITOR ------------------------------------------------------------------------------------------------//
 
 	//Once list is made, search for who you gotta gift.
-	Utility::Log("List Made! Write your name to find out who you have to gift!", Utility::Colour::Red);
+	Tools::Log("List Made! Write your name to find out who you have to gift!", Tools::Colour::Red);
 	std::cin >> name;
 
 	for (int i = 0; i < name.size(); i++)
@@ -76,7 +86,7 @@ int main()
 			//Reshuffle if its still the same name.
 			if (name == giftReceiver.at(searchLine))
 			{
-				std::shuffle(std::begin(giftReceiver), std::end(giftReceiver), rng);
+				std::shuffle(std::begin(giftReceiver), std::end(giftReceiver), generator());
 			}
 
 			else
@@ -91,7 +101,7 @@ int main()
 
 				std::string message = "You gotta gift: " + receiverName + "!";
 
-				Utility::Log(message, Utility::Colour::Red);
+				Tools::Log(message, Tools::Colour::Red);
 				isSearchEnded = true;
 			}
 			
@@ -104,7 +114,7 @@ int main()
 	
 	}
 
-	Utility::Log("Merry Christmas!", Utility::Colour::Red);
+	Tools::Log("Merry Christmas!", Tools::Colour::Red);
 	return 0;
 
 }

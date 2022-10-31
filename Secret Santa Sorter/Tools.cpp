@@ -1,13 +1,13 @@
-#include "Utility.h"
+#include "Tools.h"
 
-HANDLE Utility::consoleHandle{ nullptr };
+HANDLE Tools::consoleHandle{ nullptr };
 
-void Utility::Initialize()
+void Tools::Initialize()
 {
 	consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
 }
 
-void Utility::Log(const std::string& outputMessage, Colour colour)
+void Tools::Log(const std::string& outputMessage, Colour colour)
 {
 	//Did you forget to call Initialize()?
 	assert(consoleHandle);
