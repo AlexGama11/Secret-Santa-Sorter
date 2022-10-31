@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <vector>
 #include <random>
+#include <fstream>
 
 int main()
 {
@@ -28,7 +29,7 @@ int main()
 
 	int searchLine = 0;
 
-	//auto rng = std::minstd_rand0{};
+	std::string saveList;
 
 // ------------------------------------------------------------------------------- DELIMITOR ------------------------------------------------------------------------------------------------//
 
@@ -38,9 +39,15 @@ int main()
 	Tools::Log("Enter the Seed you wish to use!", Tools::Colour::Red);
 
 	std::getline(std::cin, seedString);
+
+	for (int i = 0; i < seedString.size(); i++)
+	{
+		seedString.at(i) = towupper(seedString.at(i));
+	}
+
 	std::seed_seq seed(seedString.begin(), seedString.end());
 
-	std::minstd_rand0 generator(seed);
+	std::default_random_engine rng(seed);
 	
 	Tools::Log("Now, name everyone who's participating as a secret santa! Write 'end' to finish the list.", Tools::Colour::Red);
 
@@ -57,14 +64,29 @@ int main()
 
 		if (santa == "END")
 		{
-			std::shuffle(std::begin(giftReceiver), std::end(giftReceiver), generator());
+			std::shuffle(std::begin(giftReceiver), std::end(giftReceiver), rng);
+
+			for (int i = 0; i < secretSanta.size(); i++)
+			{
+				saveList += secretSanta.at(i) + "\n";
+			}
+
+			auto save = "Seed: " + seedString + "\n\nSantas: \n" + saveList;
+
+			std::ofstream saveFile("../Seed/SantaListSeed.txt");
+
+			saveFile << save;
+
+			saveFile.close();
 
 			isListEnded = true;
 		}
 
-		secretSanta.push_back(santa);
-		giftReceiver.push_back(santa);
-
+		else
+		{
+			secretSanta.push_back(santa);
+			giftReceiver.push_back(santa);
+		}
 		
 	}
 
@@ -86,7 +108,7 @@ int main()
 			//Reshuffle if its still the same name.
 			if (name == giftReceiver.at(searchLine))
 			{
-				std::shuffle(std::begin(giftReceiver), std::end(giftReceiver), generator());
+				std::shuffle(std::begin(giftReceiver), std::end(giftReceiver), rng);
 			}
 
 			else
@@ -99,7 +121,7 @@ int main()
 					receiverName.at(i) = tolower(receiverName.at(i));
 				}
 
-				std::string message = "You gotta gift: " + receiverName + "!";
+				std::string message = "You gotta gift " + receiverName + "!";
 
 				Tools::Log(message, Tools::Colour::Red);
 				isSearchEnded = true;
