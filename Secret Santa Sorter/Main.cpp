@@ -48,6 +48,7 @@ int main()
 		if (santa == "END")
 		{
 			std::shuffle(std::begin(giftReceiver), std::end(giftReceiver), rng);
+			//Utility::Log(rng, Utility::Colour::Yellow);
 			isListEnded = true;
 		}
 
