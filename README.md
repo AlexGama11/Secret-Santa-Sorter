@@ -1,6 +1,6 @@
 # Secret Santa Sorter
 
-This is a basic static HTML website done with the help of various guides and friends.
+This is a basic console app that decides who you gotta gift this christmas!
 
 ## What's in this project?
 
